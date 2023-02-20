@@ -1,0 +1,28 @@
+version: 0.2
+
+
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 614694465844.dkr.ecr.ap-south-1.amazonaws.com
+      
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t nodeapprit .
+      - docker tag nodeapprit:latest 614694465844.dkr.ecr.ap-south-1.amazonaws.com/nodeapprit:latest
+     
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 614694465844.dkr.ecr.ap-south-1.amazonaws.com/nodeapprit:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"node-container","imageUri":"614694465844.dkr.ecr.ap-south-1.amazonaws.com/nodeapprit"}]' 614694465844.dkr.ecr.ap-south-1.amazonaws.com/nodeapprit > imagedefinitions.json
+
+artifacts:
+    files:
+        - imagedefinitions.json
