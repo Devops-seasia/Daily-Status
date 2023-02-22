@@ -22,6 +22,6 @@ Ajay kc
 
 [Kubernetes - First 10 Videos playlist](https://youtube.com/playlist?list=PLeD2O0_YGL4ZbOCx79NVhfXbYAFeaPtVc)
 
-[Node Project - Code](https://github.com/Devops-seasia/Daily-Status/tree/main/Ajay/Node-Project)
+[Node Project Cloud formation - Code](https://github.com/Devops-seasia/Daily-Status/tree/main/Ajay/Node-Project)
 
 
