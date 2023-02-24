@@ -1,0 +1,207 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  EcsCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: "stage-cluster"
+
+  TaskExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "ecs-task-execution-role-stage"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "ecs-tasks.amazonaws.com"
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: "taskdefinition-stage"
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      ContainerDefinitions:
+        - Name: "node-container"
+          Image: "502193727466.dkr.ecr.us-east-1.amazonaws.com/nodeapp:latest"
+
+          Essential: true
+          PortMappings:
+            - ContainerPort: 80
+      Memory: 512
+      Cpu: 256
+      NetworkMode: awsvpc
+      
+      RequiresCompatibilities:
+        - FARGATE      
+
+  MyService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref EcsCluster
+      TaskDefinition: !Ref TaskDefinition
+      DesiredCount: 1
+      LaunchType: "FARGATE"
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:
+            - "subnet-03ebe25f653fb7c0d"
+          SecurityGroups:
+            - "sg-019d6093f749ce37a"
+        
+        
+    PlatformVersion: LATEST
+
+
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: stage-bucket
+
+  
+  CodeBuildServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
+        - 'arn:aws:iam::aws:policy/CloudWatchLogsFullAccess'
+        - 'arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilderECRContainerBuilds'
+        - 'arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess'
+      Policies:
+        - PolicyName: prod-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: s3:*
+                Resource: "*"
+
+  MyCodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: stage-codebuild
+      ServiceRole: !GetAtt CodeBuildServiceRole.Arn
+      Source:
+        Type: GITHUB
+        Location: https://github.com/Sanjeev-kumar001/nodeapp.git
+      Artifacts:
+        Type: S3
+        Location: !Ref MyS3Bucket
+        
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:5.0
+        PrivilegedMode: true
+        Type: LINUX_CONTAINER
+
+  CodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS
+        - arn:aws:iam::aws:policy/AmazonECS_FullAccess
+      Policies:
+        - PolicyName: CodePipelineServiceRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:*
+                  - sns:*
+                  - cloudwatch:PutMetricData
+                  - iam:PassRole
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - codebuild:StartBuild
+                  - codebuild:StopBuild
+                  - codebuild:BatchGetBuilds
+                  - codebuild:BatchGetProjects
+                  - codedeploy:*
+                  - codepipeline:*
+                  - cloudformation:*
+                  - cloudtrail:LookupEvents
+                  - ecr:GetAuthorizationToken
+                  - ecr:BatchCheckLayerAvailability
+                  - ecr:GetDownloadUrlForLayer
+                  - ecr:BatchGetImage
+                Resource: '*'
+  MyCodePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: prod-pipeline
+      RoleArn: !GetAtt CodePipelineServiceRole.Arn
+      ArtifactStore:
+        Type: S3
+        Location: !Ref MyS3Bucket
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: Source
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Version: "1"
+                Provider: GitHub
+              Configuration:
+                Owner: Sanjeev-kumar001
+                Repo: nodeapp
+                Branch: master
+                OAuthToken: ghp_8N6KxTWDLKsHE3Vw6nPxvKq5muCeOr0aUz
+              OutputArtifacts:
+                - Name: App
+              RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: BuildAction
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: "1"
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: stage-codebuild
+              InputArtifacts:
+                - Name: App
+              OutputArtifacts:
+                - Name: BuildOutput
+              RunOrder: 1
+              
+              
+        - Name: Deploy
+          Actions:
+            - Name: DeployAction
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: '1'
+                Provider: ECS
+              InputArtifacts:
+                - Name: BuildOutput
+              Configuration:
+                ClusterName: !Ref EcsCluster
+                ServiceName: !Ref MyService
+                FileName: imagedefinitions.json 
+
+  
