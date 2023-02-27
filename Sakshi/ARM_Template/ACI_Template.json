@@ -1,0 +1,95 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "noCpu": {
+      "defaultValue": "1",
+      "type": "string"
+    },
+    "memoryInGB": {
+      "defaultValue": "4",
+      "type": "string"
+    },
+    "registryServerName": {
+      "type": "string"
+    },
+    "registryUserName": {
+      "type": "string"
+    },
+    "registryPassword": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string",
+      "defaultValue":"newcontainersakshi.azurecr.io/nodejsimage:latest"
+    },
+    "env_ENVIRONMENT_NAME": {
+      "type": "string",
+      "defaultValue":"Dev"
+    }
+  },
+  "variables": {
+    "containerInstanceName": "nodewdocker123",
+    "location": "[resourceGroup().location]",
+    "instanceApiVersion": "2018-10-01"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "[variables('instanceApiVersion')]",
+      "name": "[variables('containerInstanceName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "containers": [
+          {
+            "name": "[variables('containerInstanceName')]",
+            "properties": {
+              "image": "[parameters('image')]",
+              "ports": [
+                {
+                  "port": 8081
+                }
+              ],
+              "environmentVariables": [
+                {
+                  "name": "ENVIRONMENT_NAME",
+                  "value": "[parameters('env_ENVIRONMENT_NAME')]"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "memoryInGB": "[parameters('memoryInGB')]",
+                  "cpu": "[parameters('noCpu')]"
+                }
+              }
+            }
+          }
+        ],
+        "imageRegistryCredentials": [
+          {
+            "server": "[parameters('registryServerName')]",
+            "username": "[parameters('registryUserName')]",
+            "password": "[parameters('registryPassword')]"
+          }
+        ],
+        "ipAddress": {
+          "ports": [
+            {
+              "protocol": "TCP",
+              "port": 8081
+            }
+          ],
+          "type": "Public",
+          "dnsNameLabel": "mynodeapp12"
+        },
+        "osType": "Linux"
+      }
+    }
+  ],
+  "outputs": {
+    "instance_name": {
+      "value": "[variables('containerInstanceName')]",
+      "type": "string"
+    }
+  }
+}
