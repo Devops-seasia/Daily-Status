@@ -1,0 +1,42 @@
+Shell scripting task
+1. Create a vm with linux image
+    
+2. Create a shell scripting file with vi command. 
+        vi file.sh 
+3. Make it excutable - chmod +x file.sh
+4. Paste the following code in it.
+	#!/bin/bash
+
+	# Login to your Azure account
+	az login
+
+	# Set your subscription ID
+	az account set --subscription e593f235-2c99-4cfe-94a8-c3ba29147331
+
+	# Get the list of resources and their details
+	resource_list=$(az resource list --output table)
+
+	# Print the resource list to the terminal using jq for formatting
+	az resource list | jq
+	
+5. Make sure jq is installed on the image.
+	Open your sources file in a text editor:
+
+	sudo vim /etc/apt/sources.list
+	Add the following line to the end of that file (note deb is not a command, more info):
+
+	deb http://us.archive.ubuntu.com/ubuntu vivid main universe
+
+	Then re-index apt-get so that it can find jq:
+
+	 sudo apt-get update
+	Then do the normal install and you should be the proud new user of jq!
+
+	 sudo apt-get install jq
+ 
+6. Download azure cli in vm 
+    sudo apt install azure-cli
+	
+7. Run your command by ./file.sh
+8. You will get login page for your azure portal. login as usual.
+
