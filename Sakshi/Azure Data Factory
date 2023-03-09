@@ -1,0 +1,19 @@
+Azure Data Factory is Azure's cloud ETL service for scale-out serverless data integration and data transformation. It offers a code-free UI for intuitive authoring and single-pane-of-glass monitoring and management. 
+You can also lift and shift existing SSIS packages to Azure and run them with full compatibility in ADF.
+
+What is Azure Data Factory?
+
+In the world of big data, how is existing data leveraged in business? Is it possible to enrich data that's generated in the cloud by using reference data from on-premises data sources or other disparate data sources?
+
+For example, a gaming company collects logs that are produced by games in the cloud. It wants to analyze these logs to gain insights into customer preferences, demographics, usage behavior, and so on. The company also wants to identify up-sell and cross-sell opportunities, develop compelling new features to drive business growth,
+and provide a better experience to customers
+
+Using Azure Data Factory, you can do the following tasks:
+
+    Create and schedule data-driven workflows (called pipelines) that can ingest data from disparate data stores.
+
+    Process or transform the data by using compute services such as Azure HDInsight Hadoop, Spark, Azure Data Lake Analytics, and Azure Machine Learning.
+
+    Publish output data to data stores such as Azure Synapse Analytics for business intelligence (BI) applications to consume.
+
+
