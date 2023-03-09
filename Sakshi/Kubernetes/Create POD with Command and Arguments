@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: command3
+spec:
+  containers:
+  -  image: count
+     name: busybox
+     command: ["sleep"]
+     args: ["3600"]
+     
+     
+     THE COMMANDS TO APPLY-
+     kubectl apply -f commands.yaml
+     kubectl get pods
+     
+     
+     
+     Create POD with Arguments
+
+Modify the YAML file contents to the following one.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: command4
+spec:
+  containers:
+  -  image: count
+     name: busybox
+     args: ["sleep","3600"]
+
+kubectl apply -f commands.yaml
+
+kubectl get pods
+kubectl exec -it command4 -- sh
