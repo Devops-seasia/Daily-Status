@@ -4,7 +4,7 @@ Step -> To update the kubeconfig file:  aws eks --region us-east-1 update-kubeco
 
 Step -> To check whether our cluster is deployed: kubectl get svc
 
-Step -> Now deploy the deployment yaml file and service yaml file :  kubectl -f apply ia-app-deployment.yaml   kubectl-f apply ia-app-service.yaml
+Step -> Now deploy the deployment yaml file and service yaml file :  kubectl  apply -f ia-app-deployment.yaml   kubectl apply -f ia-app-service.yaml
 
 Step -> To check our deployment created : kubectl get deployments
 
