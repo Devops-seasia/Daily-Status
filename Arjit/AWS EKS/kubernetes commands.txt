@@ -1,0 +1,15 @@
+Step -> To check the active status of cluster:   aws eks --region us-east-1 describe-cluster --name testing --query cluster.status
+
+Step -> To update the kubeconfig file:  aws eks --region us-east-1 update-kubeconfig  --name squid
+
+Step -> To check whether our cluster is deployed: kubectl get svc
+
+Step -> Now deploy the deployment yaml file and service yaml file :  kubectl -f apply ia-app-deployment.yaml   kubectl-f apply ia-app-service.yaml
+
+Step -> To check our deployment created : kubectl get deployments
+
+Step -> To check our service created : kubectl get services
+
+Step -> To identify where are the pods of our application are running : kubectl get pods -o wide
+
+Step -> To get the external IP addresses of those nodes, issue the get nodes command : kubectl get nodes -o wide
