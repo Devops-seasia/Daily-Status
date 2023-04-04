@@ -1,0 +1,11 @@
+import json
+import boto3
+
+def lambda_handler(event, context):
+    client = boto3.client("ses")
+    subject = "email using lambda funtion "
+    body = "Sending email after every 10 minutes"
+    message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}}
+    response = client.send_email(Source = "sanjuaws786@gmail.com",
+               Destination = {"ToAddresses": ["sanjuaws786@gmail.com"]}, Message = message)
+    return response
