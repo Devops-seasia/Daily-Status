@@ -1,0 +1,33 @@
+import boto3
+
+# Initialize the EC2 client
+ec2 = boto3.client('ec2')
+
+# Specify the instance ID you want to check
+instance_id = 'i-0effa95a4eb8b0834'
+
+# Check if the instance exists
+try:
+    ec2.describe_instances(InstanceIds=[instance_id])
+    print("Instance", instance_id, "exists!")
+except ec2.exceptions.InstanceNotFound as e:
+    print("Instance", instance_id, "not found. Creating new instance...")
+    # Specify the instance parameters
+    instance_type = 't2.micro'
+    image_id = 'ami-007855ac798b5175e'
+    key_name = 'my-key-pair'
+    security_group_ids = ['sg-09b80c4cf9d7684f1']
+
+    # Launch the new instance
+    response = ec2.run_instances(
+        ImageId=image_id,
+        InstanceType=instance_type,
+        KeyName=key_name,
+        SecurityGroupIds=security_group_ids,
+        MinCount=1,
+        MaxCount=1
+    )
+
+    # Print the new instance ID
+    new_instance_id = response['Instances'][0]['InstanceId']
+    print("New instance", new_instance_id, "created!")
