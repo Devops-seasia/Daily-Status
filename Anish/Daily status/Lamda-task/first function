@@ -27,7 +27,7 @@ def lambda_handler(event, context):
     
     # Call Lambda function 2
         response = client.invoke(
-            FunctionName='my-second-function', # Replace with the name of your second Lambda function
+            FunctionName='my-second-function', 
             InvocationType='Event'
         )
         
