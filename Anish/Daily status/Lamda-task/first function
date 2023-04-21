@@ -1,0 +1,68 @@
+import boto3
+import os
+import json
+
+def lambda_handler(event, context):
+    # Get EC2 client
+    ec2 = boto3.client('ec2')
+    
+    # Get instance status
+    response = ec2.describe_instance_status(InstanceIds=['i-0ee94bf9c7d517958'])
+    
+    # Check if instance is running
+    if len(response['InstanceStatuses']) == 0:
+        # Create instance
+        instance = ec2.run_instances(
+            ImageId='ami-007855ac798b5175e',
+            InstanceType='t2.micro',
+            MinCount=1,
+            MaxCount=1,
+             UserData='''#!/bin/bash
+                      sudo apt update
+                      sudo apt install apache2 -y
+                      '''
+        )
+        
+        client = boto3.client('lambda')
+    
+    # Call Lambda function 2
+        response = client.invoke(
+            FunctionName='my-second-function', # Replace with the name of your second Lambda function
+            InvocationType='Event'
+        )
+        
+        response_payload = json.loads(response['Payload'].read())
+        
+        return {
+             'statusCode': 200,
+             'body': response_payload
+        }
+        
+        #sending mail
+        ses_client = boto3.client('ses')
+        instance_id = ['i-01d79614611cf8c9b']
+        subject = 'Instance Shutdown Notification'
+        body = f'Instance {instance_id} has been successfully shutdown.'
+        sender = ['anishdhiman6442@gmail.com']
+        recipient = ['anishdhiman6442@gmail.com']
+        response = ses_client.send_email(
+            Destination={
+                'ToAddresses': [
+                    recipient
+                 ] 
+            },
+            Message={
+                'Body': {
+                    'Text': {
+                        'Charset': 'UTF-8',
+                        'Data': body,
+                    },
+                },
+                'Subject': {
+                    'Charset': 'UTF-8',
+                    'Data': subject,
+                }, 
+            },
+            Source=sender,
+        )
+    
