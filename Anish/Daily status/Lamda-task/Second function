@@ -1,0 +1,18 @@
+import json
+import boto3
+
+ec2 = boto3.resource('ec2')
+id = 'i-0ee94bf9c7d517958'
+
+def lambda_handler(event, context):
+    instance_id = id
+    
+    instance = ec2.Instance(instance_id)
+    response = instance.terminate()
+    
+    print(f"Terminating instance {instance_id}")
+    
+    return {
+        'statusCode': 200,
+        'body': f"Instance {instance_id} terminated successfully"
+    }
