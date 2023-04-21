@@ -43,8 +43,8 @@ def lambda_handler(event, context):
         instance_id = ['i-01d79614611cf8c9b']
         subject = 'Instance Shutdown Notification'
         body = f'Instance {instance_id} has been successfully shutdown.'
-        sender = ['anishdhiman6442@gmail.com']
-        recipient = ['anishdhiman6442@gmail.com']
+        sender = ['**************']
+        recipient = ['***********']
         response = ses_client.send_email(
             Destination={
                 'ToAddresses': [
