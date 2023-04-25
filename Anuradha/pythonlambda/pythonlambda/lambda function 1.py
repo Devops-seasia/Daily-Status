@@ -69,3 +69,4 @@ def create_and_install_instance():
         if instance_id and instance_status != 'running':
             stop_instance(instance_id)
             print("EC2 instance has been shut down due to error")
+            
