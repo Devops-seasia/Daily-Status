@@ -8,9 +8,9 @@ ec2 = boto3.client('ec2')
 
 def create_instance():
     instance_type = 't2.micro'
-    ami_id = 'ami-0aa2b7722dc1b5612'
+    ami_id = '******************'
     key_name = 'lambdainstance'
-    security_group_ids = ['sg-04f480d863b1e3b59']
+    security_group_ids = ['******************']
     userdata = """#!/bin/bash
     sudo apt-get update
     sudo apt-get install -y nginx
