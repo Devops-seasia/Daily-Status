@@ -3,16 +3,16 @@ import smtplib
 import datetime
 
 ec2 = boto3.client('ec2')
-id = 'instance_id'
+
 def lambda_handler(event, context):
-    instance_id = id
+    instance_id = event['instance_id']
     
     # Stop the instance
     ec2.stop_instances(InstanceIds=[instance_id])
     
     # Send an email
-    from_email = '****************'
-    to_email = '***************'
+    from_email = '***********'
+    to_email = '*************'
     subject = 'EC2 instance shutdown'
     body = 'The EC2 instance has been shut down.'
     message = f"Subject: {subject}\n\n{body}"
