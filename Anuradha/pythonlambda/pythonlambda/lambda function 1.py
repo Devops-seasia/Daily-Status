@@ -36,8 +36,8 @@ def get_instance_public_ip(instance_id):
     return response['Reservations'][0]['Instances'][0]['PublicIpAddress']
 
 def send_email(subject, body):
-    from_email = 'anu.rajput4427@gmail.com'
-    to_email = 'anu.rajput4427@gmail.com'
+    from_email = '******************'
+    to_email = '*******************'
     message = f"Subject: {subject}\n\n{body}"
     with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
         smtp.starttls()
