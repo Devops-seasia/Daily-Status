@@ -1,0 +1,63 @@
+import boto3
+import os
+import json
+
+ec2 = boto3.client('ec2')
+ses = boto3.client('ses')
+
+def lambda_handler(event, context):
+    instance_id = "i-05a0095ebf18f8af8"
+    ssm = boto3.client('ssm')
+    response = ssm.send_command(
+        InstanceIds=[instance_id],
+        DocumentName="AWS-RunShellScript",
+        Parameters={'commands': ["sudo yum update -y", "sudo yum install -y httpd", "sudo service httpd start"]}
+    )
+
+def lambda_handler(event, context):
+
+    # Specify the instance ID here
+    instance_id = 'i-05a0095ebf18f8af8'
+
+    # Check if the instance is running
+    response = ec2.describe_instances(InstanceIds=[instance_id])
+    state = response['Reservations'][0]['Instances'][0]['State']['Name']
+
+    if state == 'running':
+        # Stop the instance
+        ec2.stop_instances(InstanceIds=[instance_id])
+
+        # Send an email notification
+    # Create an SES client
+        ses_client = boto3.client('ses')
+
+    # Specify the sender and recipient email addresses
+        sender = 'anishdhiman6442@gmail.com'
+        recipient = 'anishdhiman6442@gmail.com'
+
+    # Specify the email message
+        subject = 'Stopping an EC2 instance'
+        body = 'Conratulations, The instance has been stopped successfully!!!!!!!!!!!!!!'
+
+    # Send the email using SES
+        response = ses_client.send_email(
+            Source=sender,
+            Destination={
+                'ToAddresses': [recipient]
+            },
+            Message={
+                'Subject': {
+                    'Data': subject
+                },
+                'Body': {
+                    'Text': {
+                        'Data': body
+                    }
+                }
+            }
+        )
+    elif state == 'stopped':
+        ec2.start_instances(InstanceIds=[instance_id])
+        print('Instance started')
+    else:
+        print('Instance is in an invalid state')
