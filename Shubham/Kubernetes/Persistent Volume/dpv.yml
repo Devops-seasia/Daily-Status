@@ -1,0 +1,28 @@
+apiVersion: apps/v1         # Specifies the API version of Kubernetes to use for this Deployment.
+kind: pod            # Deployment: Indicates that this YAML defines a Deployment resource.
+# Metadata section:
+metadata:
+  name: pv            # Specifies the name of the Deployment as "pvdeploy".
+# Spec section:
+spec:
+  replicas: 1               # Specifies that only one replica of the Deployment should be created.
+  selector:
+   matchLabels:             # Defines the selector that will match the Pods controlled by this Deployment. In this case, it uses labels to match Pods.
+     app: mypv      
+# Template section:
+  template:                 # Defines the template for creating pods.
+    metadata:               # Contains metadata specific to the Pods created by this Deployment.
+      labels:               # Specifies labels to be applied to the Pods. In this case, it applies the label "app" with the value "mypv".
+        app: mypv           # Defines the specification for the Pods created by this Deployment.
+  spec:                     # Defines the specification for the pods.
+      containers:           # Specifies the containers running within the pods.
+      - name: shell         # Sets the name of the container to "shell
+        image: ubuntu       # Specifies the Docker image to use for the container. In this case, it uses the "ubuntu" image.
+        command: ["bin/bash", "-c", "sleep 10000"] # Defines the command to run within the container. In this case, it uses a shell command to sleep for 10,000 seconds.
+        volumeMounts:                 # Defines the volumes to be mounted within the container.
+        - name: mypd    # Specifies the name of the volume to mount. It corresponds to the volume defined in the volumes section.
+          mountPath: "/tmp/data1" # Specifies the mount path for the volume within the container. In this case, it mounts the volume at "/tmp/data1".
+      volumes:                  # Defines the volumes available for the pod.
+        - name: mypd              # Specifies the name of the volume. It is referenced in the 
+          persistentVolumeClaim:    # Defines a persistent volume claim (PVC) as the source for the volume. It specifies the claimName as "myebsvolclaim", indicating that this Deployment expects a PVC with that name to be available in the cluster.
+            claimName: myebsvolclaim 

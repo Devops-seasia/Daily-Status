@@ -1,0 +1,14 @@
+kubectl create -f pv.yml
+kubectl get pv
+kubectl create -f pvc.yaml
+kubectl get pvc
+kubectl get rs
+
+kubectl get deploy
+kubectl delete deploy <deployment name>
+
+kubectl exec <pod id> -it -- /bin/bash
+
+kubectl delete pod --all
+kubectl delete pvc --all 
+kubectl delete pv --all
