@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim  # Specifies that this configuration is for creating a PersistentVolumeClaim.
+apiVersion: v1                  # Specifies the API version to use for the PersistentVolume.
+metadata:
+  name: volume-claim          # Sets the name of the PersistentVolumeClaim as "volume-claim".
+spec:
+  storageClassName: "standard"  # Associates the PersistentVolume with a storage class named "standard".
+  accessModes:
+    - ReadWriteOnce    # Defines the access modes for the PersistentVolume. Specifies that the PersistentVolume can be mounted as read-write by a single node.
+  resources:
+    requests:     # Specifies the requested resources for the PersistentVolumeClaim. Specifies the requested storage capacity.
+      storage: 1Gi  # Sets the requested storage capacity to 1 gigabyte.

@@ -1,0 +1,16 @@
+
+kind: PersistentVolume  # Specifies that this configuration is for creating a PersistentVolume.
+apiVersion: v1          # Specifies the API version to use for the PersistentVolume.
+metadata:               # Contains metadata information about the PersistentVolume.
+  name: local           # Sets the name of the PersistentVolume as "local".
+  labels:               # Specifies labels to be associated with the PersistentVolume.
+    type: local
+spec:                   # Specifies the PersistentVolume's specifications.
+  storageClassName: "standard" # Associates the PersistentVolume with a storage class named "standard".
+  capacity:
+    storage: 2Gi            # Sets the storage capacity to 2 gigabytes.
+  accessModes:
+    - ReadWriteOnce   # Defines the access modes for the PersistentVolume. Specifies that the PersistentVolume can be mounted as read-write by a single node.
+  hostPath:
+    path: "/data"
+  persistentVolumeReclaimPolicy: Recycle # Sets the reclaim policy for the PersistentVolume to "Recycle". This policy is deprecated in recent Kubernetes versions and might not have the desired effect.
