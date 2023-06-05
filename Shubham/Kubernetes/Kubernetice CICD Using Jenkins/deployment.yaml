@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-game
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: my-game
+  name: deployment-204890
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-204892
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-204892
+  spec:
+    containers:
+      - image: 435770184212.dkr.ecr.us-east-1.amazonaws.com/ms:latest
+        imagePullPolicy: Always
+        name: app-204892
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: my-game
+  name: service-204891
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: app-204892

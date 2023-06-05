@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-2'
+        KUBECONFIG_ID = 'kubeid'
+    }
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'awsid', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    sh '''
+                     aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 563508789483.dkr.ecr.us-east-2.amazonaws.com
+                     docker build -t nodejs .
+                     docker tag nodejs:latest 563508789483.dkr.ecr.us-east-2.amazonaws.com/nodejs:latest
+                     docker push 563508789483.dkr.ecr.us-east-2.amazonaws.com/nodejs:latest
+                    '''
+                }
+            }
+        }
+        stage('Deploy to EKS') {
+            steps {
+                withAWS(credentials: 'awsid') {
+                    withCredentials([file(credentialsId: "${KUBECONFIG_ID}", variable: 'kubeid')]) {
+
+                   
+                        
+                        sh "aws eks --region us-east-2 describe-cluster --name eks-cluster --query cluster.status"
+                        sh "aws eks --region us-east-2 update-kubeconfig  --name  eks-cluster"
+                        sh "kubectl delete deployment/deployment-204890 -n my-game"
+                        sh "kubectl delete service/service-204891 -n my-game"
+                        sh "kubectl apply -f deployment.yaml"
+                        sh "kubectl apply -f ingress.yaml"
+                    }
+                }
+            }
+        }
+    }
+}
