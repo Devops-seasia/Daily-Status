@@ -6,7 +6,7 @@ spec:
   initContainers:
   - name: c1
     image: centos
-    command: ["/bin/sh", "-c", "echo LIKE AND SUBSCRIBE TECHNICAL GUFTGU > /tmp/vol/testfile; sleep 30"]
+    command: ["/bin/sh", "-c", "echo Shubham Chouhan > /tmp/vol/testfile; sleep 30"]
     volumeMounts:        
       - name: vol
         mountPath: "/tmp/vol"  
