@@ -6,16 +6,17 @@ kubectl describe pod <POD NAME>
 
 
 request  limit  Result
-  1 	  1	     doen
+  1 	    1	     good working
   0	      1	     request=limit
   1	      0	     default
   0	      0	     request=limit=unlimited
 
-
-cpu 
-memory
-storage
+we apply limits on
+1) cpu 
+2) memory
+3) storage
 
 limit >= request
 
-limit alwase bigger then request or equal
+limit is always bigger than then request 
+limit is equal to the request 
