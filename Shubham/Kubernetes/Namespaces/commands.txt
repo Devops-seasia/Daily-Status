@@ -1,0 +1,11 @@
+kubectl create -f pod.yml -n dev
+kubectl get pod -n dev
+kubectl delete -f pod.yml -n dev
+kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
+kubectl config view | grep namespace:
+
+
+
+
+
+
