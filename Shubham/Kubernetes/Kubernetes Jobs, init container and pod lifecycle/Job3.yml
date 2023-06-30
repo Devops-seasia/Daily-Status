@@ -10,6 +10,6 @@ spec:
        spec:
          containers:
          - image: ubuntu
-           name: bhupi
+           name: shub
            command: ["/bin/bash", "-c", "echo Shubham Chouhan; sleep 5"]
          restartPolicy: Never
