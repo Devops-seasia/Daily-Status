@@ -1,0 +1,14 @@
+kubectl get pods
+kubectl get deploy
+kubectl describe deploy deployments
+kubectl get rs
+
+kubectl delete pod <pod name>
+kubectl scale --replicas=1 deploy deployments
+kubectl logs -f <pod name>
+kubectl apply -f Deployment.yml
+
+kubectl exec <pod name> -- cat /etc/os-release
+kubectl rollout status deploy deployments
+kubectl rollout history deploy deployments
+kubectl rollout undo deploy/deployments
