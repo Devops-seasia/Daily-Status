@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-1
+  labels:
+    tier: frontend
+spec:
+  containers:
+    - name: container
+      image: nginx
+  nodeSelector:
+      hardware: t2-medium

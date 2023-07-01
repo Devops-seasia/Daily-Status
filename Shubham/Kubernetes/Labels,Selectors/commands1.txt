@@ -1,0 +1,15 @@
+kubectl get pods --show-labels
+kubectl get pods -l <label name= name id>
+kubectl get pods -l <key=value>
+
+
+kubectl get pods -l <ent=devlopment> now give a list where devlopment label is present
+kubectl get pods -l <ent!=devlopment> now give a list where devlopment label is not present
+kubectl delete pods -l <ent!=devlopment> now delete pod where devlopment label is not present
+
+
+kubectl get pod -l '<key> in (value1, value2, value3)'
+kubectl get pod -l '<key> notin (value1, value2, value3)'
+kubectl get pod -l '<key=valye, key1=value2>'
+
+

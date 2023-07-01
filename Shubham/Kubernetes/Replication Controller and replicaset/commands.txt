@@ -1,0 +1,5 @@
+kubectl delete pods <pod name>
+kubectl get rc
+kubectl scale --replicas=5 rc -l <key=value>
+
+kubectl scale --replicas=5 rc -l app=example-app

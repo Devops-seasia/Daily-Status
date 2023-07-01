@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-1
+  labels:
+    app: example-app
+    tier: frontend
+spec:
+  containers:
+    - name: container-1
+      image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-2
+  labels:
+    app: example-app
+    tier: backend
+spec:
+  containers:
+    - name: container-2
+      image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-3
+  labels:
+    app: example-app
+    tier: frontend
+spec:
+  containers:
+    - name: container-3
+      image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-4
+  labels:
+    app: example-app
+    tier: backend
+spec:
+  containers:
+    - name: container-4
+      image: nginx
