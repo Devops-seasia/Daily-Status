@@ -4,15 +4,17 @@ kubectl describe pod <POD NAME>
 
 
 
-
 request  limit  Result
-  1 	    1	     good working
+  1 	    1	     Good working
   0	      1	     request=limit
   1	      0	     default
   0	      0	     request=limit=unlimited
 
+request minimum value
+limit maximum value
+
 we apply limits on
-1) cpu 
+1) CPU 
 2) memory
 3) storage
 
@@ -20,3 +22,7 @@ limit >= request
 
 limit is always bigger than then request 
 limit is equal to the request 
+======================================================================
+
+1) Each container has a limit of 0.5 CPU TO 1 CPU
+2) Each container has a limit of 500 MB to 1 GB of memory.
