@@ -1,0 +1,23 @@
+kubectl create configmap <map name> --from-file=<abc.conf>
+# Ex - kubectl create configmap mymap --from-file=sample.conf
+kubectl get configmap
+
+kubectl exec <pod name> -it -- /bin/bash
+# cd /tmp/config/sample.conf
+# env
+
+kubectl describe configmap <map name>
+kubectl describe configmap mymap
+
+
+========================================================
+echo "Admin" > username.txt; echo "password1234" > password.txt
+username.txt --- Admin
+password.txt --- password1234
+
+kubectl create secret generic <file name> --from-file=username.txt --from-file=password.txt
+# Ex - kubectl create secret generic mysecret --from-file=username.txt --from-file=password.txt
+
+
+kubectl get secret
+kubectl describe secret <file name>
