@@ -1,0 +1,10 @@
+kubectl autoscale deployment mydeploy --cpu-percent=20 --min=1 --max=10
+kubectl exec <pod name> -it -- /bin/bash
+kubectl get pod -n kube-system
+kubectl delete pod <pod name> -n kube-system
+kubectl-insecure-tls
+
+$ wget -O metricserver.yml https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+
+kubectl delete -n kube-system deployments.apps metrics-server
