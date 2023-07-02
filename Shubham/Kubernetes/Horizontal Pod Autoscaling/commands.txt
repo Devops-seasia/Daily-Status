@@ -8,3 +8,7 @@ $ wget -O metricserver.yml https://github.com/kubernetes-sigs/metrics-server/rel
 
 
 kubectl delete -n kube-system deployments.apps metrics-server
+
+
+kubectl get hpa
+kubectl delete hpa <hpa name>
