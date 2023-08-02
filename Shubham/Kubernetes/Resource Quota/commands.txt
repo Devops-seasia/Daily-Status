@@ -4,7 +4,7 @@ kubectl describe pod <POD NAME>
 
 
 
-request  limit  Result
+request  limit     Result
   1 	    1	     Good working
   0	    1	     request=limit
   1	    0	     default
