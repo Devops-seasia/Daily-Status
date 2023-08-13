@@ -1,0 +1,15 @@
+choco install kubernetes-helm
+helm create shub
+
+helm template shub 
+
+helm install shub --debug --dry-run shub
+helm install shub shub
+helm list -a
+kubectl get all
+helm upgrade <Relise name> shub
+helm rollback shub 1
+helm delete shub
+
+
+docker pull nginxinc/nginx-unprivileged:latest

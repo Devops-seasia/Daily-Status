@@ -1,0 +1,15 @@
+helm create helloworld
+ls -lart | grep helloworld
+helm install shub helloworld
+helm repo update
+helm repo list 
+helm search repo nginx
+helm repo index helloworld 
+
+helm repo remove svc
+
+helm plugin list
+helm plugin install https://github.com/databus23/helm-diff
+helm diff revision myhelloworld 1 2
+helm plugin uninstall diff
+helm search hub <docker contener name>

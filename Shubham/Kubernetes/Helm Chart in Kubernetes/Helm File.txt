@@ -1,0 +1,18 @@
+---
+releases: 
+
+-name: <helm file name> helloworld
+ chart:<working dir> ./helloworld
+ installed:<flage "true"> true
+
+helmfile sync
+
+
+---
+releases: 
+
+-name: <helm file name> helloworld
+ chart:<working dir> ./helloworld
+ installed:<flage "false"> false
+
+helmfile sync

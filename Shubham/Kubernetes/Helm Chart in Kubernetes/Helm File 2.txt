@@ -1,0 +1,29 @@
+#install helm git plugin
+helm plugin install https://github.com/aslafy-z/helm-git --version 0.11.1
+
+#############################################################################
+---
+repositories:
+ -name: helloworld
+  uri: git+<git hub repo link>@<repo name>?ref=master&space=0
+
+releases:
+ -name: helloworld
+  chart: helloworld/helloworld
+  installed: <true for install and fauls for uninstall>
+
+
+###############################################################################
+# install multipal helm chart
+
+---
+releases: 
+
+-name: <helm file name> helloworld1
+ chart:<working dir> ./helloworld1
+ installed:<flage "true"> true
+
+
+-name: <helm file name> helloworld2
+ chart:<working dir> ./helloworld2
+ installed:<flage "true"> true

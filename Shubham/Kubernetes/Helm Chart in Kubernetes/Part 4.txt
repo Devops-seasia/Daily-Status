@@ -1,0 +1,5 @@
+helm install --set replicacount=2 <revision name> <helm chart name>
+helm install -f myvalue.yaml <revision name> <helm chart name>
+vi env-value.yaml
+
+helm upgrade <revision name> .
