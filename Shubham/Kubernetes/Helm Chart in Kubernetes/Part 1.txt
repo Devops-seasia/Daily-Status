@@ -10,6 +10,8 @@ kubectl get all
 helm upgrade <Relise name> shub
 helm rollback shub 1
 helm delete shub
+helm uninstall <relase name> --keep-history
 
+helm ls --all-namespace -a
 
 docker pull nginxinc/nginx-unprivileged:latest
