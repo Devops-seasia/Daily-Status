@@ -1,0 +1,36 @@
+helm repo list
+helm repo add <name> <url>
+helm repo remove <name>
+helm search repo <chart>
+helm show <value/chart/redme/all> <chart name>
+
+helm install <relese name> <chart name>
+helm install stable/tomcat --version <version name>
+helm install mychart stable/tomcat --wait --timeout 10s
+helm create helloworld
+helm install --dry-run testchart stable/tomcat
+
+--set ##specify overrides on the command line
+--value or -f ##specify a yaml file with overrides
+
+Ex:- helm install my chart stable/tomcat --set servicetype=nodepord
+     helm install testchart stable/jenkin --set master servicetype=Nodeport
+
+helm get #information about from a name related
+helm get <all/maintest/value> <relese name>
+helm get all mychart
+
+helm list ##list all the named release
+
+helm status <relese name>
+helm status mychart
+helm history #fetch release history
+helm history <revision name>
+helm delete <release name>
+helm upgrade <release name> <chart name>
+helm rollback <relese name> <revision name>
+
+
+helm pull <chart name> 
+helm pull --untar <cahrt name>
+helm install mychart <url>
