@@ -4,7 +4,7 @@ def create_load_balancer(lb_name, subnet_ids, security_group_id):
     elbv2 = boto3.client('elbv2')
 
     if len(subnet_ids) < 2:
-        print("Error: At least two subnets in different Availability Zones are required.")
+        print("Error: At least two subnets  are required.")
         return None
 
     # Create an Application Load Balancer
